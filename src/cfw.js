@@ -9,7 +9,16 @@ async function customRules(content) {
     type: "select",
     proxies: [...openAiProxies],
   });
+  
+   content.rules = rules.filter( itme => !item.includes('paypal')) // 干掉paypal
 
-  content.rules.unshift("DOMAIN-SUFFIX,openai.com,OpenAi");
+  const paypal = ["DOMAIN-SUFFIX,paypal.com,Proxy", "DOMAIN-SUFFIX,paypalobjects.com,Proxy"]
+
+  const openAi = ['DOMAIN-SUFFIX,openai.com,OpenAi','DOMAIN-SUFFIX,statsigapi.net,OpenAi']
+
+  const xrender = ['DOMAIN-SUFFIX,xrender.fun,Proxy']
+
+  content.rules.unshift(...paypal,...openAi,...xrender);
+
   return content;
 }
