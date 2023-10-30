@@ -15,7 +15,13 @@ module.exports.parse = ({ content, name, url }, { yaml, axios, notify }) => {
     console.log(item.includes('paypal'), 'item', item);
   }); // 干掉paypal
 
+  const common = ['DOMAIN-SUFFIX,qq.com,DIRECT', 'DOMAIN-SUFFIX,betahub.cn,DIRECT'];
+
   const paypal = ['DOMAIN-SUFFIX,paypal.com,Proxy', 'DOMAIN-SUFFIX,paypalobjects.com,Proxy'];
+
+  const biying = ['DOMAIN-SUFFIX,bing.com,OpenAi']
+
+  const xrender = ['DOMAIN-SUFFIX,xrender.fun,Proxy'];
 
   const openAi = ['DOMAIN-SUFFIX,openai.com,OpenAi', 'DOMAIN-SUFFIX,statsigapi.net,OpenAi'];
 
