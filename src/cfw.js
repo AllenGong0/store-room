@@ -12,7 +12,7 @@ module.exports.parse = ({ content, name, url }, { yaml, axios, notify }) => {
   const { rules } = content;
 
   content.rules = rules.filter((item) => {
-    console.log(item.includes('paypal'), 'item', item);
+    return !item.includes('paypal')
   }); // 干掉paypal
 
   const common = ['DOMAIN-SUFFIX,qq.com,DIRECT', 'DOMAIN-SUFFIX,betahub.cn,DIRECT'];
