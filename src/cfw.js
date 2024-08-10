@@ -1,36 +1,44 @@
 module.exports.parse = ({ content, name, url }, { yaml, axios, notify }) => {
-  const proxyGroup = content['proxy-groups'];
-
+  console.log(content, "content");
   const openAiProxies = content.proxies
-    .filter((item) => item.name.includes('台湾') || item.name.includes('美国'))
+    .filter((item) => item.name.includes("台湾") || item.name.includes("美国"))
     .map((item) => item.name);
-  proxyGroup.push({
-    name: 'OpenAi',
-    type: 'select',
-    proxies: [...openAiProxies, 'Proxy'],
+  content["proxy-groups"].unshift({
+    name: "OpenAi",
+    type: "select",
+    proxies: [...openAiProxies],
   });
   const { rules } = content;
 
   content.rules = rules.filter((item) => {
-    return !item.includes('paypal')
+    return !item.includes("paypal");
   }); // 干掉paypal
 
-  const paypal = ['DOMAIN-SUFFIX,paypal.com,Proxy', 'DOMAIN-SUFFIX,paypalobjects.com,Proxy'];
+  const paypal = [
+    "DOMAIN-SUFFIX,paypal.com,速鹰666",
+    "DOMAIN-SUFFIX,paypalobjects.com,速鹰666",
+  ];
 
-  const biying = ['DOMAIN-SUFFIX,bing.com,OpenAi']
+  const biying = ["DOMAIN-SUFFIX,bing.com,OpenAi"];
 
-  const xrender = ['DOMAIN-SUFFIX,xrender.fun,Proxy'];
+  const xrender = ["DOMAIN-SUFFIX,xrender.fun,速鹰666"];
 
-  const openAi = ['DOMAIN-SUFFIX,openai.com,OpenAi', 'DOMAIN-SUFFIX,statsigapi.net,OpenAi'];
+  const openAi = [
+    "DOMAIN-SUFFIX,openai.com,OpenAi",
+    "DOMAIN-SUFFIX,statsigapi.net,OpenAi",
+    "DOMAIN-SUFFIX,chatgpt.com,OpenAi",
+  ];
 
-  const yfd = ['DOMAIN-SUFFIX,zhenguanyu.com,DIRECT', 'DOMAIN-SUFFIX,yuanfudao.biz,DIRECT'];
+  const mlProxy = ["dropboxusercontent.com", "huggingface.co"].map(
+    (item) => `DOMAIN-SUFFIX,${item},速鹰666`
+  );
 
-  const mlProxy = ['dropboxusercontent.com','huggingface.co'].map( item => `DOMAIN-SUFFIX,${item},Proxy`)
+  const steam = ["steampowered.com"].map(
+    (item) => `DOMAIN-SUFFIX,${item},速鹰666`
+  );
 
-  const steam = ['steampowered.com'].map( item => `DOMAIN-SUFFIX,${item},Proxy`)
+  content.rules.unshift(...paypal, ...openAi, ...xrender, ...mlProxy);
 
-  content.rules.unshift(...paypal, ...openAi, ...yfd, ...xrender, ...mlProxy);
-
-  console.log(content)
+  console.log("qwe", content);
   return content;
-}
+};
