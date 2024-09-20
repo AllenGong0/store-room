@@ -1,21 +1,20 @@
 module.exports.parse = ({ content, name, url }, { yaml, axios, notify }) => {
-  const proxyGroup = content['proxy-groups'];
+  const proxyGroups = content['proxy-groups'];
+  const proxyName = proxyGroups[0].name;
 
   const openAiProxies = content.proxies
     .filter((item) => item.name.includes('台湾') || item.name.includes('美国'))
     .map((item) => item.name);
-  proxyGroup.push({
+  proxyGroups.unshift({
     name: 'OpenAi',
     type: 'select',
-    proxies: [...openAiProxies, 'Proxy'],
+    proxies: [...openAiProxies],
   });
   const { rules } = content;
 
   content.rules = rules.filter((item) => {
     return !item.includes('paypal')
   }); // 干掉paypal
-
-  const proxyName = '速鹰666';
 
   const biying = ['DOMAIN-SUFFIX,bing.com,OpenAi'];
 
@@ -33,7 +32,9 @@ module.exports.parse = ({ content, name, url }, { yaml, axios, notify }) => {
 
   const others = ['loverslab.com'].map( item => `DOMAIN-SUFFIX,${item},${proxyName}`);
 
-  content.rules.unshift(...paypal, ...openAi, ...yfd, ...xrender, ...mlProxy, ...steam, ...others,...steamStatic);
+  content.rules.unshift(...paypal, ...openAi, ...xrender, ...mlProxy, ...steam, ...others);
 
+  console.log(content,'end')
+  
   return content;
 }
