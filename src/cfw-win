@@ -1,0 +1,39 @@
+module.exports.parse = ({ content, name, url }, { yaml, axios, notify }) => {
+  const proxyGroup = content['proxy-groups'];
+
+  const openAiProxies = content.proxies
+    .filter((item) => item.name.includes('台湾') || item.name.includes('美国'))
+    .map((item) => item.name);
+  proxyGroup.push({
+    name: 'OpenAi',
+    type: 'select',
+    proxies: [...openAiProxies, 'Proxy'],
+  });
+  const { rules } = content;
+
+  content.rules = rules.filter((item) => {
+    return !item.includes('paypal')
+  }); // 干掉paypal
+
+  const proxyName = '速鹰666';
+
+  const biying = ['DOMAIN-SUFFIX,bing.com,OpenAi'];
+
+  const openAi = ['DOMAIN-SUFFIX,openai.com,OpenAi', 'DOMAIN-SUFFIX,statsigapi.net,OpenAi'];
+
+  const xrender = [`DOMAIN-SUFFIX,xrender.fun,${proxyName}`];
+
+  const paypal = [`DOMAIN-SUFFIX,paypal.com,${proxyName}`, `DOMAIN-SUFFIX,paypalobjects.com,${proxyName}`];
+
+  const mlProxy = ['dropboxusercontent.com','huggingface.co'].map( item => `DOMAIN-SUFFIX,${item},${proxyName}`);
+
+  const steam = ['steampowered.com','steamcommunity.com'].map( item => `DOMAIN-SUFFIX,${item},${proxyName}`);
+
+  const steamStatic = [`DOMAIN-SUFFIX,steamstatic.com,DIRECT`]
+
+  const others = ['loverslab.com'].map( item => `DOMAIN-SUFFIX,${item},${proxyName}`);
+
+  content.rules.unshift(...paypal, ...openAi, ...yfd, ...xrender, ...mlProxy, ...steam, ...others,...steamStatic);
+
+  return content;
+}
