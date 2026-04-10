@@ -6,7 +6,7 @@
 proxy-groups:
   - name: "OpenAi"
     type: select
-    filter: "台湾|美国|日本"   # 动态筛选节点
+    filter: "(台湾|美国|日本|Taiwan|USA|Japan|JP|TW|US)"
 
 rules:
   # 以下顺序与原脚本 config.rules.unshift(...) 完全一致
