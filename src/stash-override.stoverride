@@ -1,0 +1,29 @@
+# ======================================================
+# Stash Override 配置
+# 严格对应 Clash Verge JS 脚本逻辑
+# ======================================================
+
+proxy-groups:
+  - name: "OpenAi"
+    type: select
+    filter: "台湾|美国|日本"   # 动态筛选节点
+
+rules:
+  # 以下顺序与原脚本 config.rules.unshift(...) 完全一致
+  - DOMAIN-SUFFIX,github.com,速鹰666           # github
+  - DOMAIN-SUFFIX,paypal.com,速鹰666           # paypal (1/2)
+  - DOMAIN-SUFFIX,paypalobjects.com,速鹰666    # paypal (2/2)
+  - DOMAIN-SUFFIX,openai.com,OpenAi            # openAi (1/3)
+  - DOMAIN-SUFFIX,chatgpt.com,OpenAi           # openAi (2/3)
+  - DOMAIN-SUFFIX,statsigapi.net,OpenAi        # openAi (3/3)
+  - DOMAIN-SUFFIX,zhenguanyu.com,DIRECT        # yfd (1/2)
+  - DOMAIN-SUFFIX,yuanfudao.biz,DIRECT         # yfd (2/2)
+  - DOMAIN-SUFFIX,xrender.fun,速鹰666          # xrender
+  - DOMAIN-SUFFIX,dropboxusercontent.com,速鹰666 # mlProxy (1/2)
+  - DOMAIN-SUFFIX,huggingface.co,速鹰666       # mlProxy (2/2)
+  - DOMAIN-SUFFIX,cursor.com,速鹰666           # cursor
+  - DOMAIN-SUFFIX,nintendo.com,速鹰666         # ns
+  - DOMAIN-SUFFIX,firecore.com,速鹰666         # infuse
+  - DOMAIN-SUFFIX,googlesource.com,速鹰666     # google
+  - DOMAIN-SUFFIX,bing.com,OpenAi              # biying
+  - DOMAIN-SUFFIX,steampowered.com,速鹰666     # steam
