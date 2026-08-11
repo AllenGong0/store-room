@@ -1,10 +1,11 @@
-name: 机场节点 DNS 兼容
+name: 机场节点 DNS 兼容（iOS/macOS）
 desc: |-
   为速鹰 666 与快枪手的代理节点域名使用各自机场提供的 DNS。
   只补充节点域名解析，不替换机场配置原有的分流、DNS、策略组或节点。
+  独立覆写不适用于 tvOS；Apple TV 请使用已内置该 DNS 段的主配置。
 author: AllenGong0
 homepage: https://github.com/AllenGong0/store-room
-version: 1.0.0
+version: 1.1.0
 
 dns:
   # DoH / DoT 服务自身域名的引导解析只能使用 IP 地址 DNS。

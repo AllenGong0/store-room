@@ -1,0 +1,76 @@
+# Stash tvOS 主配置模板
+#
+# Apple TV 不能依赖独立 DNS 覆写，因此节点 DNS 规则直接写在主配置中。
+# 公开仓库不会保存机场订阅 token：导入后请在 iPhone/Mac 的 Stash
+# 可视化编辑器中替换下面两个 example.invalid 地址，再同步到 Apple TV。
+
+mode: rule
+log-level: info
+
+dns:
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  nameserver-policy:
+    '+.syddns-obno.xyz':
+      - https://query.nmsls.pub/dns-query
+      - tls://query.nmsls.pub:8453
+    '+.novastd.net':
+      - https://query.nmsls.pub/dns-query
+      - tls://query.nmsls.pub:8453
+    '+.cseplea.xyz':
+      - https://query.nmsls.pub/dns-query
+      - tls://query.nmsls.pub:8453
+    '+.kunlun03dns.com':
+      - https://20.247.42.211:36290/dns-query/clash?site=kuaiqiangshou
+      - https://20.239.241.138:55228/dns-query/clash?site=kuaiqiangshou
+      - https://104.208.122.199:62201/dns-query/clash?site=kuaiqiangshou
+  fake-ip-filter:
+    - '+.syddns-obno.xyz'
+    - '+.novastd.net'
+    - '+.cseplea.xyz'
+    - '+.kunlun03dns.com'
+
+proxy-providers:
+  suying:
+    url: https://example.invalid/replace-with-suying-subscription
+    path: ./providers/suying.yaml
+    interval: 3600
+    headers:
+      User-Agent: ClashMeta
+      Accept: application/yaml
+  kuaiqiangshou:
+    url: https://example.invalid/replace-with-kuaiqiangshou-subscription
+    path: ./providers/kuaiqiangshou.yaml
+    interval: 3600
+    headers:
+      User-Agent: ClashMeta
+      Accept: application/yaml
+
+proxy-groups:
+  - name: 节点选择
+    type: select
+    proxies:
+      - 自动选择
+      - DIRECT
+    use:
+      - suying
+      - kuaiqiangshou
+  - name: 自动选择
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    use:
+      - suying
+      - kuaiqiangshou
+
+rules:
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - GEOIP,CN,DIRECT
+  - MATCH,节点选择
