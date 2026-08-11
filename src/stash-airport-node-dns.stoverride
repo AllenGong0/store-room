@@ -1,0 +1,38 @@
+name: 机场节点 DNS 兼容
+desc: |-
+  为速鹰 666 与快枪手的代理节点域名使用各自机场提供的 DNS。
+  只补充节点域名解析，不替换机场配置原有的分流、DNS、策略组或节点。
+author: AllenGong0
+homepage: https://github.com/AllenGong0/store-room
+version: 1.0.0
+
+dns:
+  # DoH / DoT 服务自身域名的引导解析只能使用 IP 地址 DNS。
+  # 覆写采用数组前插语义，不会删除机场原有的 default-nameserver。
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+
+  # 速鹰 666：来自机场配置中的 proxy-server-nameserver。
+  # 快枪手：来自机场配置中的三个专用 DoH。
+  nameserver-policy:
+    '+.syddns-obno.xyz':
+      - https://query.nmsls.pub/dns-query
+      - tls://query.nmsls.pub:8453
+    '+.novastd.net':
+      - https://query.nmsls.pub/dns-query
+      - tls://query.nmsls.pub:8453
+    '+.cseplea.xyz':
+      - https://query.nmsls.pub/dns-query
+      - tls://query.nmsls.pub:8453
+    '+.kunlun03dns.com':
+      - https://20.247.42.211:36290/dns-query/clash?site=kuaiqiangshou
+      - https://20.239.241.138:55228/dns-query/clash?site=kuaiqiangshou
+      - https://104.208.122.199:62201/dns-query/clash?site=kuaiqiangshou
+
+  # 节点地址必须得到真实 IP，不能把 Fake IP 当作节点服务器地址。
+  fake-ip-filter:
+    - '+.syddns-obno.xyz'
+    - '+.novastd.net'
+    - '+.cseplea.xyz'
+    - '+.kunlun03dns.com'
