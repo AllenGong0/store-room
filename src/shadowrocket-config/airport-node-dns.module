@@ -1,0 +1,17 @@
+#!name=机场节点 DNS 自动分流
+#!desc=按代理节点服务器域名，为速鹰 666 和快枪手选择各自机场提供的 DNS；不修改普通请求的 DNS 或分流规则。
+#!author=AllenGong0
+#!homepage=https://github.com/AllenGong0/store-room
+
+[Host]
+# 速鹰 666
+syddns-obno.xyz = server:https://query.nmsls.pub/dns-query
+*.syddns-obno.xyz = server:https://query.nmsls.pub/dns-query
+novastd.net = server:https://query.nmsls.pub/dns-query
+*.novastd.net = server:https://query.nmsls.pub/dns-query
+cseplea.xyz = server:https://query.nmsls.pub/dns-query
+*.cseplea.xyz = server:https://query.nmsls.pub/dns-query
+
+# 快枪手
+kunlun03dns.com = server:https://20.247.42.211:36290/dns-query/clash?site=kuaiqiangshou
+*.kunlun03dns.com = server:https://20.247.42.211:36290/dns-query/clash?site=kuaiqiangshou
