@@ -6,26 +6,19 @@ function main(config, profilename) {
 	console.log(profilename);
 
 	const suying = "速鹰666";
-	const mmy = "mmy";
 	const tag = "TAGMeta";
 	const kqs = "快枪手";
 	const kanyun = "kanyun";
 
-	const customConfigProfiles = [suying, mmy, tag];
-	const customOpenAiProxyGroupProfile = [suying,mmy];
+	const customConfigProfiles = [suying, tag];
+	const customOpenAiProxyGroupProfile = [suying];
 
 	if (!customConfigProfiles.includes(profilename)) {
 		return config;
 	}
 
-	const proxyGroupNames = {
-		[suying]: "速鹰666",
-		[mmy]: "🔰国外流量",
-		[tag]: "🛫 TAGSS",
-	};
-
-	const proxyGroupName = proxyGroupNames[profilename];
 	const proxyGroup = config["proxy-groups"];
+	const proxyGroupName = proxyGroup[0].name;
 
 	if (customOpenAiProxyGroupProfile.includes(profilename)) {
 		// Filter proxies for OpenAI group (Taiwan, US, Japan)
