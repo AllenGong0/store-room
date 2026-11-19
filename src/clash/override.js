@@ -1,17 +1,13 @@
 // Clash Verge Script
 // Main function receives the config object directly
 function main(config, profilename) {
-
-
 	console.log(profilename);
 
 	const suying = "速鹰666";
 	const tag = "TAGMeta";
-	const kqs = "快枪手";
-	const kanyun = "kanyun";
 
 	const customConfigProfiles = [suying, tag];
-	const customOpenAiProxyGroupProfile = [suying];
+	const customAiProxyGroupProfile = [suying];
 
 	if (!customConfigProfiles.includes(profilename)) {
 		return config;
@@ -20,9 +16,11 @@ function main(config, profilename) {
 	const proxyGroup = config["proxy-groups"];
 	const proxyGroupName = proxyGroup[0].name;
 
-	if (customOpenAiProxyGroupProfile.includes(profilename)) {
-		// Filter proxies for OpenAI group (Taiwan, US, Japan)
-		const openAiProxies = config.proxies
+	const suffix = `DOMAIN-SUFFIX`;
+
+	if (customAiProxyGroupProfile.includes(profilename)) {
+		// Filter proxies for AI group (Taiwan, US, Japan)
+		const AIProxies = config.proxies
 			.filter(
 				(item) =>
 					item.name.includes("台湾") ||
@@ -32,21 +30,23 @@ function main(config, profilename) {
 			)
 			.map((item) => item.name);
 
-		// Add OpenAI proxy group at the beginning
-		proxyGroup.unshift({
-			name: "OpenAi",
-			type: "select",
-			proxies: [...openAiProxies],
-		});
+		// Add AI proxy group at the beginning
 
-		const openAi = [
-			`DOMAIN-SUFFIX,openai.com,OpenAi`,
-			`DOMAIN-SUFFIX,chatgpt.com,OpenAi`,
-			`DOMAIN-SUFFIX,statsigapi.net,OpenAi`,
-			`DOMAIN-SUFFIX,x.ai,OpenAi`,
-			`DOMAIN-SUFFIX,grok.com,OpenAi`,
-		];
-		config.rules.unshift(...openAi);
+		const AIName = "AI";
+
+		proxyGroup.unshift({
+			name: AIName,
+			type: "select",
+			proxies: [...AIProxies],
+		});
+		const AIProxyRule = [
+			"openai.com",
+			"chatgpt.com",
+			"statsigapi.net",
+			"x.ai",
+			"grok.com",
+		].map((item) => `${suffix},${item},${AIName}`);
+		config.rules.unshift(...AIProxyRule);
 	}
 
 	// Remove paypal related rules
@@ -54,59 +54,59 @@ function main(config, profilename) {
 		return !item.includes("paypal");
 	});
 
-	// Custom rules
-	const github = [`DOMAIN-SUFFIX,github.com,${proxyGroupName}`];
-
-	const cursor = [`DOMAIN-SUFFIX,cursor.com,${proxyGroupName}`];
-
-	const google = [`DOMAIN-SUFFIX,googlesource.com,${proxyGroupName}`];
-
-	const paypal = [
-		`DOMAIN-SUFFIX,paypal.com,${proxyGroupName}`,
-		`DOMAIN-SUFFIX,paypalobjects.com,${proxyGroupName}`,
+	// Direct rules
+	const yfdDomain = [
+		`zhenguanyu.com`,
+		`yuanfudao.com`,
+		`yuanfudao.biz`,
+		`moxt.ai`,
+		`yuanfudaoschool.biz`,
 	];
 
-	const xrender = [`DOMAIN-SUFFIX,xrender.fun,${proxyGroupName}`];
+	const twoFADomain = [`2fa.fun`];
 
-	const yfd = [
-		`DOMAIN-SUFFIX,zhenguanyu.com,DIRECT`,
-		`DOMAIN-SUFFIX,yuanfudao.com,DIRECT`,
-		`DOMAIN-SUFFIX,yuanfudao.biz,DIRECT`,
-		`DOMAIN-SUFFIX,moxt.ai,DIRECT`,
-		`DOMAIN-SUFFIX,yuanfudaoschool.biz,DIRECT`,
-	];
-
-	const directs = [`DOMAIN-SUFFIX,2fa.fun,DIRECT`];
-
-	const mlProxy = [`dropboxusercontent.com`, `huggingface.co`].map(
-		(item) => `DOMAIN-SUFFIX,${item},${proxyGroupName}`
+	const directsProxyRules = [...yfdDomain, ...twoFADomain].map(
+		(item) => `${suffix},${item},DIRECT`
 	);
 
-	const steam = [`steampowered.com`].map(
-		(item) => `DOMAIN-SUFFIX,${item},${proxyGroupName}`
-	);
+	// Proxy rules
+	const github = [`github.com`];
 
-	const ns = [`nintendo.com`].map(
-		(item) => `DOMAIN-SUFFIX,${item},${proxyGroupName}`
-	);
+	const cursor = [`cursor.com`];
 
-	const infuse = [`firecore.com`].map(
-		(item) => `DOMAIN-SUFFIX,${item},${proxyGroupName}`
-	);
+	const google = [`googlesource.com`];
 
-	// Add custom rules at the beginning
-	config.rules.unshift(
+	const paypal = [`paypal.com`, `paypalobjects.com`];
+
+	const xrender = [`xrender.fun`];
+
+	const mlProxy = [`dropboxusercontent.com`, `huggingface.co`];
+
+	const steam = [`steampowered.com`];
+
+	const ns = [`nintendo.com`];
+
+	const infuse = [`firecore.com`];
+
+	const figma = [`figma.com`];
+
+	const gitlab = [`gravatar.com`];
+
+	const proxyRules = [
 		...github,
 		...paypal,
-		...yfd,
 		...xrender,
 		...mlProxy,
 		...cursor,
 		...ns,
 		...infuse,
 		...google,
-		...directs
-	);
+		...figma,
+		...gitlab,
+	].map((item) => `${suffix},${item},${proxyGroupName}`);
+
+	// Add custom rules at the beginning
+	config.rules.unshift(...directsProxyRules, ...proxyRules);
 
 	return config;
 }
