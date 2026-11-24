@@ -65,7 +65,9 @@ function main(config, profilename) {
 
 	const twoFADomain = [`2fa.fun`];
 
-	const directsProxyRules = [...yfdDomain, ...twoFADomain].map(
+	const xSpeedy = [`x-speedy.top`]
+
+	const directsProxyRules = [...yfdDomain, ...twoFADomain,...xSpeedy].map(
 		(item) => `${suffix},${item},DIRECT`
 	);
 
